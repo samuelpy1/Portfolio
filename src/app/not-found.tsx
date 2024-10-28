@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function NotFound() {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-black to-gray-900 text-white">
             <h1 className="text-4x1 font-bold text-red-800 mb-6">404: Page Not Found</h1>
             <Image src={logo} alt="page not found nasa" className="mb-4 h-40 w-auto" />
             <p className="text-lg mb-4">O conteúdo que você está tentando acessar não está disponível!</p>
