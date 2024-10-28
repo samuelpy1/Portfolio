@@ -1,6 +1,7 @@
 import { TipoAvaliacao } from "@/types";
 import { promises as fs } from "fs";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
 
 // Método GET para buscar uma avaliação específica
 export async function GET(
@@ -11,7 +12,7 @@ export async function GET(
     const id = (await params).id;
     
     const file = await fs.readFile(
-      process.cwd() + "/data/base.json",
+      path.join(process.cwd(), 'public', 'data', 'base.json'),
       "utf-8"
     );
 
@@ -44,7 +45,7 @@ export async function PUT(
     const id = (await params).id;
 
     const file = await fs.readFile(
-      process.cwd() + "/data/base.json",
+      path.join(process.cwd(), 'public', 'data', 'base.json'),
       "utf-8"
     );
 
@@ -67,7 +68,7 @@ export async function PUT(
     };
 
     await fs.writeFile(
-      process.cwd() + "/data/base.json",
+      path.join(process.cwd(), 'public', 'data', 'base.json'),
       JSON.stringify(avaliacoes, null, 2)
     );
 
@@ -90,7 +91,7 @@ export async function DELETE(
     const id = (await params).id;
 
     const file = await fs.readFile(
-      process.cwd() + "/data/base.json",
+      path.join(process.cwd(), 'public', 'data', 'base.json'),
       "utf-8"
     );
 
@@ -103,7 +104,7 @@ export async function DELETE(
       avaliacoes.splice(indice, 1);
 
       const newFile = JSON.stringify(avaliacoes);
-      await fs.writeFile(process.cwd() + "/data/base.json", newFile);
+      await fs.writeFile(path.join(process.cwd(), 'public', 'data', 'base.json'), newFile);
       return NextResponse.json({msg:"Produto excluído com sucesso."});
     }
   } catch (error) {
