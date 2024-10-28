@@ -10,7 +10,7 @@ export async function GET(
 ) {
   try {
     const id = (await params).id;
-    
+
     const file = await fs.readFile(
       path.join(process.cwd(), 'public', 'data', 'base.json'),
       "utf-8"
@@ -39,7 +39,7 @@ export async function GET(
 // Método PUT existente
 export async function PUT(
   request: Request,
-  { params }:  { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const id = (await params).id;
@@ -67,8 +67,9 @@ export async function PUT(
       data: new Date(avaliacaoAtualizada.data)
     };
 
+    // Write to /tmp instead of public/data
     await fs.writeFile(
-      path.join(process.cwd(), 'public', 'data', 'base.json'),
+      '/tmp/base.json',
       JSON.stringify(avaliacoes, null, 2)
     );
 
@@ -85,7 +86,7 @@ export async function PUT(
 // Método DELETE
 export async function DELETE(
   request: Request,
-  { params }:  { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const id = (await params).id;
@@ -100,12 +101,14 @@ export async function DELETE(
     const indice = avaliacoes.findIndex((a) => a.id == Number(id));
 
     if (indice != -1) {
-      
       avaliacoes.splice(indice, 1);
 
-      const newFile = JSON.stringify(avaliacoes);
-      await fs.writeFile(path.join(process.cwd(), 'public', 'data', 'base.json'), newFile);
-      return NextResponse.json({msg:"Produto excluído com sucesso."});
+      // Write to /tmp instead of public/data
+      await fs.writeFile('/tmp/base.json', JSON.stringify(avaliacoes));
+
+      return NextResponse.json({ msg: "Produto excluído com sucesso." });
+    } else {
+      return NextResponse.json({ error: "Avaliação não encontrada" }, { status: 404 });
     }
   } catch (error) {
     console.error("Falha na exclusão da Avaliação.", error);

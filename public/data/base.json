@@ -144,20 +144,11 @@
     "feedback": "Mediano"
   },
   {
-    "id": 21,
-    "nomePessoa": "Luiz K",
-    "nomeAvaliacao": "CP3 - Login Logout",
-    "tipoAvaliacao": "Checkpoint",
-    "data": "06-08-2024",
-    "nota": 5,
-    "feedback": "Ruim"
-  },
-  {
     "id": 22,
     "nomePessoa": "Luiz K",
-    "nomeAvaliacao": "Challenge Sprints 1",
+    "nomeAvaliacao": "Challenge Sprints 3",
     "tipoAvaliacao": "Sprint",
-    "data": "04-29-2024",
+    "data": "2024-04-29T03:00:00.000Z",
     "nota": 7,
     "feedback": "Bom"
   },

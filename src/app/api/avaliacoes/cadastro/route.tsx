@@ -3,39 +3,37 @@ import { promises as fs } from "fs";
 import { TipoAvaliacao } from "@/types";
 import path from "path";
 
-//ENDPOINT DESTE ARQUIVO:
+// ENDPOINT DESTE ARQUIVO:
+// http://localhost:3000/api/base-produtos
 
-//http://localhost:3000/api/base-produtos
+export async function POST(request: Request) {
+  try {
+    // Read the existing evaluations from the original JSON file
+    const filePath = path.join(process.cwd(), 'public', 'data', 'base.json');
+    const file = await fs.readFile(filePath, "utf-8");
 
+    // Parse the existing evaluations
+    const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
 
-export async function POST(request:Request) {
+    // Get the new evaluation from the request
+    const avaliacao: TipoAvaliacao = await request.json();
 
-    try {
-        //Recuperação da lista de produtos que está em um arquivo .json e colocamos em uma constante. 
-        const file = await fs.readFile(path.join(process.cwd(), 'public', 'data', 'base.json'), "utf-8");
+    // Generate a new ID for the new evaluation
+    avaliacao.id = avaliacoes[avaliacoes.length - 1].id + 1;
 
-        //A lista vem no formato de string, para podermos manipular ela, devemos converter em objeto.
-        const avaliacoes:TipoAvaliacao[] = JSON.parse(file);
+    // Add the new evaluation to the list
+    avaliacoes.push(avaliacao);
 
-        //Recuperar o  objeto que chegou no request e tipar ele, para podermos posteriormente adicionar um novo ID e guardar na lista.
-        const avaliacao:TipoAvaliacao = await request.json();
+    // Write the updated list to a temporary file
+    const newFilePath = '/tmp/base.json';
+    await fs.writeFile(newFilePath, JSON.stringify(avaliacoes, null, 2));
 
-        //Gerando um novo ID para o novo produto.
-        avaliacao.id = avaliacoes[avaliacoes.length - 1].id+1;
+    // Optionally, you can also update the original file
+    // await fs.writeFile(filePath, JSON.stringify(avaliacoes, null, 2));
 
-        //Adicionamos o novo produto na lista.
-        avaliacoes.push(avaliacao);
-
-        //Vamos converter a lista para string/JSONpara podermos devolver ela no arquivo .json.
-        const newFile = JSON.stringify(avaliacoes);
-
-        //Finalmente podemos utilizar o fs para escrever ou guardar a lista no arquivo e sobrepor as antigas informações.
-        await fs.writeFile(path.join(process.cwd(), 'public', 'data', 'base.json'), newFile);
-
-        return NextResponse.json(avaliacao,{status:201})
-
-    } catch (error) {
-        console.error("Falha na criação de um novo produto.", error);
-        return NextResponse.json({msg:"Falha na criação!"},{status:500});
-    }
+    return NextResponse.json(avaliacao, { status: 201 });
+  } catch (error) {
+    console.error("Falha na criação de um novo produto.", error);
+    return NextResponse.json({ msg: "Falha na criação!" }, { status: 500 });
+  }
 }
