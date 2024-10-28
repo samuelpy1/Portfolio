@@ -1,10 +1,10 @@
 import { TipoAvaliacao } from "@/types";
 import { promises as fs } from "fs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 // Método GET para buscar uma avaliação específica
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
