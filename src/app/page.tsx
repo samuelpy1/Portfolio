@@ -1,7 +1,7 @@
-// page.tsx
 "use client";
 import Image from "next/image";
 import { alunos } from "./alunos";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -30,15 +30,14 @@ export default function Home() {
             <section className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4 shadow">
                 <h3 className="font-bold mb-2">Personal Checkpoints</h3>
-                {/* Substitua pelos dados reais, se necessário */}
                 <p>CPS: -</p>
                 <p>GS: -</p>
               </div>
 
               <div className="bg-white rounded-lg p-4 shadow">
-                <h3 className="font-bold mb-2">Adicionar/visualizar</h3>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded">Adicionar</button>
-                <button className="bg-gray-300 text-black px-4 py-2 rounded ml-2">Visualizar</button>
+                <h3 className="font-bold mb-2">Main Contenders</h3>
+                <Link href="pages/apod/cadastro" className="bg-blue-500 text-white px-4 py-2 rounded m-2"> Add New </Link>
+                <Link href={`pages/apod/${aluno.nomeEstudante}`} className="bg-blue-500 text-white px-4 py-2 rounded"> View All </Link>
               </div>
 
               <div className="bg-white rounded-lg p-4 shadow">

@@ -1,12 +1,16 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { TipoAvaliacao } from "@/types";
+import { use } from "react"; // Importando o React.use
 
-export default function About({ params }: { params: { nome: string } }) {
+export default function About({ params }: { params: Promise<{ nome: string }> }) {
   const [avaliacoes, setAvaliacoes] = useState<TipoAvaliacao[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Utilizando o React.use para desempacotar a Promise
+  const unwrappedParams = use(params);
 
   useEffect(() => {
     async function getAvaliacoesPorPessoa(nome: string) {
@@ -26,8 +30,10 @@ export default function About({ params }: { params: { nome: string } }) {
       }
     }
 
-    getAvaliacoesPorPessoa(params.nome);
-  }, [params.nome]);
+    if (unwrappedParams) {
+      getAvaliacoesPorPessoa(unwrappedParams.nome);
+    }
+  }, [unwrappedParams]);
 
   if (loading) {
     return (
@@ -56,7 +62,7 @@ export default function About({ params }: { params: { nome: string } }) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <p className="text-xl text-gray-600">Nenhuma avaliação encontrada para {params.nome}</p>
+          <p className="text-xl text-gray-600">Nenhuma avaliação encontrada para {unwrappedParams.nome}</p>
           <Link href="/">
             <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
               Voltar ao início
