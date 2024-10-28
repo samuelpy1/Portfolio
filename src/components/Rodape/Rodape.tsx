@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaFacebook, FaLinkedin, FaTwitter, FaYoutube } from 'react-icons/fa';
-import Logo from "@/public/img/logo.png"
+import Logo from "../../assets/fiaplogo.png"
 
 export default function Rodape() {
   return (

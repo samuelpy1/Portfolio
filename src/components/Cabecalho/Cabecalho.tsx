@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Logo from "../../public/img/fiaplogo.png"
+import Logo from "../../assets/fiaplogo.png"
 import Link from "next/link";
 export default function Cabecalho() {
     return (
