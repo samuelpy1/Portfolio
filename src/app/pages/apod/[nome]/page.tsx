@@ -109,6 +109,7 @@ export default function About({ params }: { params: { nome: string } }) {
                   {avaliacao.feedback}
                 </p>
               </div>
+              <Link href=`pages/apod/${avaliacao.id}`>
             </div>
           ))}
         </div>
