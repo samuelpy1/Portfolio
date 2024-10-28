@@ -3,7 +3,9 @@ import { promises as fs } from "fs";
 import { TipoAvaliacao } from "@/types";
 
 //ENDPOINT DESTE ARQUIVO:
-//http://localhost:3000/api/avaliacoes/cadastro
+
+//http://localhost:3000/api/base-produtos
+
 
 export async function POST(request:Request) {
 
@@ -35,4 +37,4 @@ export async function POST(request:Request) {
         console.error("Falha na criação de um novo produto.", error);
         return NextResponse.json({msg:"Falha na criação!"},{status:500});
     }
-} 
+}
