@@ -115,6 +115,7 @@ export default function About({ params }: { params: Promise<{ nome: string }> })
                   {avaliacao.feedback}
                 </p>
               </div>
+              <Link href={`pages/apod/${avaliacao.id}`}> EDITAR </Link>
             </div>
           ))}
         </div>
