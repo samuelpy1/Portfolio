@@ -6,7 +6,7 @@ import Logo from "@/public/img/logo.png"
 
 export default function Rodape() {
   return (
-    <footer className="bg-[#1a112b] text-white py-10">
+    <footer className="bg-gradient-to-r from-red-600 to-pink-500 text-white py-10">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         {/* Quick Links */}
         <div className="mb-6 md:mb-0">
