@@ -38,10 +38,10 @@ export async function GET(
 // Método PUT existente
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }:  { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = await params.id;
+    const id = (await params).id;
 
     const file = await fs.readFile(
       process.cwd() + "/src/data/base.json",
@@ -84,10 +84,10 @@ export async function PUT(
 // Método DELETE
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }:  { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = await params.id;
+    const id = (await params).id;
 
     const file = await fs.readFile(
       process.cwd() + "/src/data/base.json",
