@@ -10,6 +10,11 @@ export default function Cabecalho() {
             </Link>
                 <Link className="ml-4 font-semibold text-3xl" href={'/'}>Students Portfolio</Link>
             </span>
+            <nav className="flex gap-3 text-lg">
+                <Link className="hover:text-black" href={'/pages/checkpoints'}>CheckPoints</Link>
+                <Link className="hover:text-black" href={'/pages/gs'}>Global Solution</Link>
+                <Link className="hover:text-black" href={'/pages/cs'}>Challenge Sprints</Link>
+            </nav>
         </div>
     );
 };
