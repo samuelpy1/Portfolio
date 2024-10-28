@@ -1,92 +1,82 @@
-import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
 import { TipoAvaliacao } from "@/types";
+import { promises as fs } from "fs";
+import { NextResponse } from "next/server";
 
-
+// Método GET para buscar uma avaliação específica
 export async function GET(
-    request: Request,
-    { params }: { params: { id: number } }
-  ) {
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const id = await params.id;
+    
     const file = await fs.readFile(
       process.cwd() + "/src/data/base.json",
       "utf-8"
     );
-    const dados: TipoAvaliacao[] = JSON.parse(file);
-  
-    const avaliacao = dados.find((p) => p.id == params.id);
-  
-    return NextResponse.json(avaliacao);
-  }
-  
-  export async function PUT(
-    request: Request,
-    { params }: { params: { id: number } }
-  ) {
-    try {
-      const file = await fs.readFile(
-        process.cwd() + "/src/data/base.json",
-        "utf-8"
-      );
-  
-      const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
-  
-      const { id, nomePessoa, nomeAvaliacao, tipoAvaliacao,  data, feedback, nota } = await request.json();
 
-      const indice = avaliacoes.findIndex((p) => p.id == params.id);
-  
-      if (indice != -1) {
-        const avaliacao = { id, nomePessoa, nomeAvaliacao, data, tipoAvaliacao, feedback, nota } as TipoAvaliacao;
-        avaliacao.id = params.id;
-  
-        avaliacao.splice(indice, 1, avaliacoes);
-        const newFile = JSON.stringify(avaliacoes);
-  
-        //Finalmente podemos utilizar o fs para escrever ou guardar a lista no arquivo e sobrepor as antigas informações.
-        await fs.writeFile(process.cwd() + "/src/data/base.json", newFile);
-  
-        return NextResponse.json({msg:"Produto atualizado com sucesso."});
-      }
-    } catch (error) {
-      console.error("Falha na atualização do produto.", error);
-      return NextResponse.json({ msg: "Falha no UPDATE!" }, { status: 500 });
+    const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
+    const avaliacao = avaliacoes.find((a) => a.id === Number(id));
+
+    if (!avaliacao) {
+      return NextResponse.json(
+        { error: "Avaliação não encontrada" },
+        { status: 404 }
+      );
     }
+
+    return NextResponse.json(avaliacao);
+  } catch (error) {
+    console.error("Erro ao buscar avaliação:", error);
+    return NextResponse.json(
+      { error: "Erro ao buscar avaliação" },
+      { status: 500 }
+    );
   }
-  
-  
-  export async function DELETE(
-      request: Request,
-      { params }: { params: { id: number } }
-    ) {
-      try {
-        const file = await fs.readFile(
-          process.cwd() + "/src/data/base.json",
-          "utf-8"
-        );
-    
-        //A lista vem no formato de string, para podermos manipular ela, devemos converter em objeto.
-        const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
-    
-        //Verificando a existência do produto através do ID passado.
-        //Se os IDs derem match, recebemos o retorno de um indice válido, caso contrário recebemos -1.
-        const indice = avaliacoes.findIndex((p) => p.id == params.id);
-    
-        //Verificar se o indice é válido:
-        if (indice != -1) {
-          
-          //Removendo o objeto da lista utilizando o indice passado.
-          avaliacoes.splice(indice, 1);
-    
-          //Vamos converter a lista para string/JSONpara podermos devolver ela no arquivo .json.
-          const newFile = JSON.stringify(avaliacoes);
-    
-          //Finalmente podemos utilizar o fs para escrever ou guardar a lista no arquivo e sobrepor as antigas informações.
-          await fs.writeFile(process.cwd() + "/src/data/base.json", newFile);
-    
-          return NextResponse.json({msg:"Produto excluído com sucesso."});
-        }
-      } catch (error) {
-        console.error("Falha na exclusão do produto.", error);
-        return NextResponse.json({ msg: "Falha no DELETE!" }, { status: 500 });
-      }
+}
+
+// Método PUT existente
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const id = await params.id;
+
+    const file = await fs.readFile(
+      process.cwd() + "/src/data/base.json",
+      "utf-8"
+    );
+
+    const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
+    const avaliacaoAtualizada = await request.json();
+
+    const index = avaliacoes.findIndex((a) => a.id === Number(id));
+
+    if (index === -1) {
+      return NextResponse.json(
+        { error: "Avaliação não encontrada" },
+        { status: 404 }
+      );
     }
-    
+
+    avaliacoes[index] = {
+      ...avaliacaoAtualizada,
+      id: Number(id),
+      data: new Date(avaliacaoAtualizada.data)
+    };
+
+    await fs.writeFile(
+      process.cwd() + "/src/data/base.json",
+      JSON.stringify(avaliacoes, null, 2)
+    );
+
+    return NextResponse.json(avaliacoes[index]);
+  } catch (error) {
+    console.error("Erro ao atualizar avaliação:", error);
+    return NextResponse.json(
+      { error: "Erro ao atualizar avaliação" },
+      { status: 500 }
+    );
+  }
+}
