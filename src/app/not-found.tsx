@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import Link from "next/link";
-import nf from "../public/img/nasa-logo.png";
+import nf from "../assets/fiaplogo.png";
 import { motion } from "framer-motion";
 
 export default function NotFound() {

@@ -2,6 +2,7 @@
 "use client";
 import Image from "next/image";
 import { alunos } from "./alunos";
+import { TipoAvaliacao } from "@/types";
 
 
 export default function Home() {
@@ -29,9 +30,9 @@ export default function Home() {
 
             <section className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4 shadow">
-                <h3 className="font-bold mb-2">Personal Checkpoints</h3>
+                <h3 className="font-bold mb-2">Global Solution</h3>
                 {/* Substitua pelos dados reais, se necessário */}
-                <p>CPS: -</p>
+                <p>GS: -</p>
                 <p>GS: -</p>
               </div>
 
