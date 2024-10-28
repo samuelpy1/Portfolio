@@ -11,13 +11,25 @@ export async function GET(
   try {
     const id = (await params).id;
 
-    const file = await fs.readFile(
-      path.join(process.cwd(), 'public', 'data', 'base.json'),
-      "utf-8"
-    );
+    const baseFilePath = path.join(process.cwd(), 'public', 'data', 'base.json');
+    const tempFilePath = path.join('/tmp', 'temp.json');
 
-    const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
-    const avaliacao = avaliacoes.find((a) => a.id === Number(id));
+    // Read base file
+    const baseFile = await fs.readFile(baseFilePath, "utf-8");
+    const avaliacoesBase: TipoAvaliacao[] = JSON.parse(baseFile);
+    let avaliacao = avaliacoesBase.find((a) => a.id === Number(id));
+
+    // If not found in base file, check temporary file
+    if (!avaliacao) {
+      try {
+        const tempFile = await fs.readFile(tempFilePath, "utf-8");
+        const avaliacoesTemp: TipoAvaliacao[] = JSON.parse(tempFile);
+        avaliacao = avaliacoesTemp.find((a) => a.id === Number(id));
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (tempError) {
+        console.warn("Temporary file not found, continuing with base file only.");
+      }
+    }
 
     if (!avaliacao) {
       return NextResponse.json(
@@ -36,7 +48,43 @@ export async function GET(
   }
 }
 
-// Método PUT existente
+// Método DELETE
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const id = (await params).id;
+
+    const filePath = path.join(process.cwd(), 'public', 'data', 'base.json');
+    const tempFilePath = path.join(process.cwd(), 'public', 'data', 'temp.json');
+
+    const file = await fs.readFile(filePath, "utf-8");
+    const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
+
+    const indice = avaliacoes.findIndex((a) => a.id === Number(id));
+
+    if (indice === -1) {
+      return NextResponse.json(
+        { error: "Avaliação não encontrada" },
+        { status: 404 }
+      );
+    }
+
+    avaliacoes.splice(indice, 1);
+
+    // Write to a temporary file
+    await fs.writeFile(tempFilePath, JSON.stringify(avaliacoes, null, 2));
+
+    // Replace original file with temporary file
+    await fs.rename(tempFilePath, filePath);
+
+    return NextResponse.json({ msg: "Avaliação excluída com sucesso." });
+  } catch (error) {
+    console.error("Falha na exclusão da Avaliação.", error);
+    return NextResponse.json({ msg: "Falha no DELETE!" }, { status: 500 });
+  }
+}
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -44,11 +92,10 @@ export async function PUT(
   try {
     const id = (await params).id;
 
-    const file = await fs.readFile(
-      path.join(process.cwd(), 'public', 'data', 'base.json'),
-      "utf-8"
-    );
+    const filePath = path.join(process.cwd(), 'public', 'data', 'base.json');
+    const tempFilePath = path.join(process.cwd(), 'public', 'data', 'temp.json');
 
+    const file = await fs.readFile(filePath, "utf-8");
     const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
     const avaliacaoAtualizada = await request.json();
 
@@ -67,11 +114,11 @@ export async function PUT(
       data: new Date(avaliacaoAtualizada.data)
     };
 
-    // Write to /tmp instead of public/data
-    await fs.writeFile(
-      '/tmp/base.json',
-      JSON.stringify(avaliacoes, null, 2)
-    );
+    // Write to a temporary file
+    await fs.writeFile(tempFilePath, JSON.stringify(avaliacoes, null, 2));
+
+    // Replace original file with temporary file
+    await fs.rename(tempFilePath, filePath);
 
     return NextResponse.json(avaliacoes[index]);
   } catch (error) {
@@ -80,38 +127,5 @@ export async function PUT(
       { error: "Erro ao atualizar avaliação" },
       { status: 500 }
     );
-  }
-}
-
-// Método DELETE
-export async function DELETE(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const id = (await params).id;
-
-    const file = await fs.readFile(
-      path.join(process.cwd(), 'public', 'data', 'base.json'),
-      "utf-8"
-    );
-
-    const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
-
-    const indice = avaliacoes.findIndex((a) => a.id == Number(id));
-
-    if (indice != -1) {
-      avaliacoes.splice(indice, 1);
-
-      // Write to /tmp instead of public/data
-      await fs.writeFile('/tmp/base.json', JSON.stringify(avaliacoes));
-
-      return NextResponse.json({ msg: "Produto excluído com sucesso." });
-    } else {
-      return NextResponse.json({ error: "Avaliação não encontrada" }, { status: 404 });
-    }
-  } catch (error) {
-    console.error("Falha na exclusão da Avaliação.", error);
-    return NextResponse.json({ msg: "Falha no DELETE!" }, { status: 500 });
   }
 }
