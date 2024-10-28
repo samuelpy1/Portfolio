@@ -11,7 +11,7 @@ export const alunos: Estudante[] = [
     {
         nomeEstudante: "Samuel Yariwake",
         Turma: "1TDSPV",
-        RM: 123456,
+        RM: 556461,
         Foto: Samuel
     },
     {
