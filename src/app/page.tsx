@@ -36,9 +36,9 @@ export default function Home() {
               </div>
 
               <div className="bg-white rounded-lg p-4 shadow">
-                <h3 className="font-bold mb-2">Adicionar/visualizar</h3>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded">Adicionar</button>
-                <button className="bg-gray-300 text-black px-4 py-2 rounded ml-2">Visualizar</button>
+                <h3 className="font-bold mb-2">Main Contenders</h3>
+                <Link href="pages/apod/cadastro" className="bg-blue-500 text-white px-4 py-2 rounded m-2"> Add New </Link>
+                <Link href={`pages/apod/${aluno.nomeEstudante}`} className="bg-blue-500 text-white px-4 py-2 rounded"> View All </Link>
               </div>
 
               <div className="bg-white rounded-lg p-4 shadow">

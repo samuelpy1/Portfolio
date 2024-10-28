@@ -9,19 +9,19 @@ import Amorim from "@/assets/amorim.jpg";
 
 export const alunos: Estudante[] = [
     {
-        nomeEstudante: "Samuel Yariwake",
+        nomeEstudante: "Samuel",
         Turma: "1TDSPV",
         RM: 556461,
         Foto: Samuel
     },
     {
-        nomeEstudante: "Luiz Kamada",
+        nomeEstudante: "Luiz K",
         Turma: "1TDSPV",
         RM: 557652,
         Foto: Luizk
     },
     {
-        nomeEstudante: "Luiz Felipe",
+        nomeEstudante: "Luiz F",
         Turma: "1TDSPV",
         RM: 555591,
         Foto: Luiz
