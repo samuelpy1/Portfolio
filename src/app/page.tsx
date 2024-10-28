@@ -43,10 +43,10 @@ export default function Home() {
               <section className="space-y-2">
                 <h3 className="font-bold bg-gradient-to-r from-gray-800 to-gray-500 bg-clip-text text-transparent">Avaliações</h3>
                 <div className="flex space-x-2">
-                  <Link href="/apod/cadastro" className="bg-teal-500 text-white px-4 py-2 rounded-md transition-transform transform hover:scale-105 shadow-lg hover:bg-teal-600">
+                  <Link href="pages/apod/cadastro" className="bg-teal-500 text-white px-4 py-2 rounded-md transition-transform transform hover:scale-105 shadow-lg hover:bg-teal-600">
                     Adicionar
                   </Link>
-                  <Link href={`/apod/${aluno.nomeEstudante}`} className="bg-teal-500 text-white px-4 py-2 rounded-md transition-transform transform hover:scale-105 shadow-lg hover:bg-teal-600">
+                  <Link href={`pages/apod/${aluno.nomeEstudante}`} className="bg-teal-500 text-white px-4 py-2 rounded-md transition-transform transform hover:scale-105 shadow-lg hover:bg-teal-600">
                     Ver todas
                   </Link>
                 </div>

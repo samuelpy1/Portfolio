@@ -16,7 +16,7 @@ export default function About({ params }: { params: Promise<{ nome: string }> })
     async function getAvaliacoesPorPessoa(nome: string) {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:3000/api/avaliacoes/byname/${nome}`);
+        const response = await fetch(`/api/avaliacoes/byname/${nome}`);
         if (!response.ok) {
           throw new Error('Falha ao carregar os dados');
         }
@@ -115,7 +115,7 @@ export default function About({ params }: { params: Promise<{ nome: string }> })
                   {avaliacao.feedback}
                 </p>
               </div>
-              <Link href={`pages/apod/${avaliacao.id}`}> EDITAR </Link>
+              <Link href={`edit/${avaliacao.id}`}> EDITAR </Link>
             </div>
           ))}
         </div>

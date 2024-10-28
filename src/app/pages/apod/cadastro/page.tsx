@@ -36,7 +36,7 @@ export default function CadAvaliacao() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/avaliacoes/cadastro", {
+      const response = await fetch("/api/avaliacoes/cadastro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(avaliacao),

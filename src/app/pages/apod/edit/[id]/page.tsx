@@ -18,7 +18,7 @@ export default function EditarAvaliacao() {
     id: 0,
     tipoAvaliacao: "GS"
   });
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
