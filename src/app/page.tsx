@@ -32,6 +32,7 @@ export default function Home() {
                 <h3 className="font-bold mb-2">Global Solution</h3>
                 {/* Substitua pelos dados reais, se necessário */}
                 <p>GS: -</p>
+
                 <p>GS: -</p>
               </div>
 
