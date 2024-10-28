@@ -44,17 +44,14 @@ export default function Home() {
 
               <div className="bg-white rounded-lg p-4 shadow">
                 <h3 className="font-bold mb-2">Checkpoints</h3>
-                {/* Substitua pelos dados reais, se necessário */}
                 <p>Checkpoints avg: -</p>
               </div>
 
               <div className="bg-white rounded-lg p-4 shadow">
                 <h3 className="font-bold mb-2">Challenger Sprints</h3>
                 <ul>
-                  {/* Substitua pelos dados reais, se necessário */}
                   <li>Sprint 1</li>
                   <li>Sprint 2</li>
-                  <li>Sprint 3</li>
                 </ul>
               </div>
             </section>
