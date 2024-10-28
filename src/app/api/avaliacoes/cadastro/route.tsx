@@ -11,7 +11,7 @@ export async function POST(request:Request) {
 
     try {
         //Recuperação da lista de produtos que está em um arquivo .json e colocamos em uma constante. 
-        const file = await fs.readFile(process.cwd() + "/src/data/base.json", "utf-8");
+        const file = await fs.readFile(process.cwd() + "/src/public/data/base.json", "utf-8");
 
         //A lista vem no formato de string, para podermos manipular ela, devemos converter em objeto.
         const avaliacoes:TipoAvaliacao[] = JSON.parse(file);
@@ -29,7 +29,7 @@ export async function POST(request:Request) {
         const newFile = JSON.stringify(avaliacoes);
 
         //Finalmente podemos utilizar o fs para escrever ou guardar a lista no arquivo e sobrepor as antigas informações.
-        await fs.writeFile(process.cwd() + "/src/data/base.json", newFile);
+        await fs.writeFile(process.cwd() + "/src/public/data/base.json", newFile);
 
         return NextResponse.json(avaliacao,{status:201})
 

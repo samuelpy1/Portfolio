@@ -11,7 +11,7 @@ export async function GET(
     const id = (await params).id;
     
     const file = await fs.readFile(
-      process.cwd() + "/src/data/base.json",
+      process.cwd() + "/src/public/data/base.json",
       "utf-8"
     );
 
@@ -44,7 +44,7 @@ export async function PUT(
     const id = (await params).id;
 
     const file = await fs.readFile(
-      process.cwd() + "/src/data/base.json",
+      process.cwd() + "/src/public/data/base.json",
       "utf-8"
     );
 
@@ -67,7 +67,7 @@ export async function PUT(
     };
 
     await fs.writeFile(
-      process.cwd() + "/src/data/base.json",
+      process.cwd() + "/src/public/data/base.json",
       JSON.stringify(avaliacoes, null, 2)
     );
 
@@ -90,7 +90,7 @@ export async function DELETE(
     const id = (await params).id;
 
     const file = await fs.readFile(
-      process.cwd() + "/src/data/base.json",
+      process.cwd() + "/src/public/data/base.json",
       "utf-8"
     );
 
@@ -103,7 +103,7 @@ export async function DELETE(
       avaliacoes.splice(indice, 1);
 
       const newFile = JSON.stringify(avaliacoes);
-      await fs.writeFile(process.cwd() + "/src/data/base.json", newFile);
+      await fs.writeFile(process.cwd() + "/src/public/data/base.json", newFile);
       return NextResponse.json({msg:"Produto excluído com sucesso."});
     }
   } catch (error) {
