@@ -1,7 +1,7 @@
-// page.tsx
 "use client";
 import Image from "next/image";
 import { alunos } from "./alunos";
+import Link from "next/link";
 
 
 export default function Home() {
