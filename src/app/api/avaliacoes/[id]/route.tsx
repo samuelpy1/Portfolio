@@ -15,7 +15,8 @@ export async function GET(
     const tempFilePath = path.join('/tmp', 'temp.json');
 
     // Read base file
-    const baseFile = await fs.readFile(baseFilePath, "utf-8");
+    const baseFile = await database.listDocuments(process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string, process.env.NEXT_PUBLIC_APPWRITE_COLLECTION as string, [Query.orderAsc("$createdAt")]);
+    ;
     const avaliacoesBase: TipoAvaliacao[] = JSON.parse(baseFile);
     let avaliacao = avaliacoesBase.find((a) => a.id === Number(id));
 
