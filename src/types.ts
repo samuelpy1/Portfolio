@@ -1,6 +1,7 @@
 import { StaticImageData } from "next/image";
 
 export type TipoAvaliacao = {
+    id: number,
     nomePessoa: string,
     nomeAvaliacao: string,
     tipoAvaliacao: string, 
