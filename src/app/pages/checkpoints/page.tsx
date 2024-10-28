@@ -3,7 +3,7 @@ import Idoso from "../../../public/img/immanuel.jpg";
 import Livro from "../../../public/img/livro.jpg";
 import Velikovsky from "@/public/img/velikas.jpg";
 
-export default function Historia() {
+export default function Checkpoints() {
   return (
     <div className="relative">
       <div className="relative w-full h-[50rem]">

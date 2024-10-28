@@ -2,7 +2,7 @@ import Image from "next/image";
 import Esposa from "../../../public/img/immanuel-velikovsky.jpg";
 import Veli from "@/public/img/immveli.jpg";
 
-export default function Vida() {
+export default function Cs() {
   return (
     <div className="relative">
       <div className="relative w-full h-[50rem]">

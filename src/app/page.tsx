@@ -15,7 +15,7 @@ export default function Home() {
         </h1>
         <h2 className="text-2xl text-center mb-8">Trabalhos feitos na FIAP</h2>
         <div className="flex gap-8">
-          <Link href="/pages/historia">
+          <Link href="/pages/checkpoints">
             <motion.div
               className="bg-white/10 rounded-lg p-5 backdrop-blur-sm"
               initial={{ y: 30, opacity: 0, scale: 0.8 }}
@@ -41,7 +41,7 @@ export default function Home() {
               🌟 CheckPoints
             </motion.div>
           </Link>
-          <Link href="/pages/legado">
+          <Link href="/pages/gs">
             <motion.div
               className="bg-white/10 rounded-lg p-5 backdrop-blur-sm"
               initial={{ y: 30, opacity: 0, scale: 0.8 }}
@@ -67,7 +67,7 @@ export default function Home() {
               👨‍💻 Global Solution
             </motion.div>
           </Link>
-          <Link href="/pages/vida">
+          <Link href="/pages/cs">
             <motion.div
               className="bg-white/10 rounded-lg p-5 backdrop-blur-sm"
               initial={{ y: 30, opacity: 0, scale: 0.8 }}

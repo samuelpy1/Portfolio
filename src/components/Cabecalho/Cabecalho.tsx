@@ -11,9 +11,9 @@ export default function Cabecalho() {
                 <Link className="ml-4 font-semibold text-3xl" href={'/'}>Immanuel Velikovsky</Link>
             </span>
             <nav className="flex gap-3 text-lg">
-                <Link className="hover:text-yellow-500" href={'/pages/historia'}>CheckPoints</Link>
-                <Link className="hover:text-yellow-500" href={'/pages/legado'}>Global Solution</Link>
-                <Link className="hover:text-yellow-500" href={'/pages/vida'}>Challenge Sprints</Link>
+                <Link className="hover:text-yellow-500" href={'/pages/checkpoints'}>CheckPoints</Link>
+                <Link className="hover:text-yellow-500" href={'/pages/gs'}>Global Solution</Link>
+                <Link className="hover:text-yellow-500" href={'/pages/cs'}>Challenge Sprints</Link>
             </nav>
         </div>
     );
