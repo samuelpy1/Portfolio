@@ -5,10 +5,10 @@ import { NextRequest, NextResponse } from "next/server";
 // Método GET para buscar uma avaliação específica
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = await context.params.id;
+    const id = (await params).id;
     
     const file = await fs.readFile(
       process.cwd() + "/src/data/base.json",
