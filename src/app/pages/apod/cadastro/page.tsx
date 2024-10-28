@@ -65,8 +65,19 @@ export default function CadAvaliacao() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-t from-gray-100 to-white p-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg max-w-4xl w-full">
+    <div className="relative">
+    <div className="relative w-full h-[15rem] bg-gradient-to-b from-black to-gray-900 border-b-black border-b-2">
+    <div className="absolute inset-0 z-10 "></div>
+    <div className="relative z-20 flex justify-center items-center h-full">
+      <h1 className="text-center font-extrabold text-transparent text-[6rem] bg-clip-text bg-gradient-to-r from-red-600 to-yellow-400 animate-pulse">
+        Página Detalhada de Avaliação
+      </h1>
+
+      </div>
+    </div>
+    <div className="bg-gradient-to-r from-red-500 via-yellow-500 to-pink-500 h-1 rounded-full"></div>
+    <div className="flex flex-col justify-center items-center p-6 bg-gradient-to-b from-black to-gray-900">
+      <div className="bg-gradient-to-tr from-red-600 to-pink-500 p-8 rounded-xl shadow-lg max-w-4xl w-full">
         <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Cadastrar Avaliação</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -151,6 +162,7 @@ export default function CadAvaliacao() {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 }

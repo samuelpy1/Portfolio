@@ -7,7 +7,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="relative">
-    {/* foi muito dificil fazer isso funciona favor n TOQUE */}
     <div className="relative w-full h-[15rem] bg-gradient-to-b from-black to-gray-900 border-b-black border-b-2">
       <div className="absolute inset-0 z-10 "></div>
       <div className="relative z-20 flex justify-center items-center h-full">
@@ -20,7 +19,6 @@ export default function Home() {
     <div className="bg-gradient-to-r from-red-500 via-yellow-500 to-pink-500 h-1 rounded-full"></div>
 
     <main className="flex flex-col justify-center items-center p-6 bg-gradient-to-b from-black to-gray-900">
-      {/* <div className="overflow-hidden bg-gradient-to-tr from-red-500 to-yellow-500 p-8 rounded-xl shadow-2xl max-w-7xl mx-auto"> */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {alunos.map((aluno, index) => (
             <div key={index} className="bg-gradient-to-tr from-red-600 to-pink-500 p-6 rounded-lg shadow-md">
@@ -54,7 +52,6 @@ export default function Home() {
             </div>
           ))}
         </div>
-      {/* </div> */}
       
     </main>
     </div>

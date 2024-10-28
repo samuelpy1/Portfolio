@@ -9,6 +9,22 @@ export default function About({ params }: { params: Promise<{ nome: string }> })
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const handleDelete = async (id:number)=>{
+    try {
+      const response = await fetch(`/api/avaliacoes/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("Produto foi excluído com sucesso!");
+        window.location.reload();
+      }
+
+    } catch (error) {
+      console.error("Falha na exclusão do produto: ",error);
+    }
+  }  
+
   // Utilizando o React.use para desempacotar a Promise
   const unwrappedParams = use(params);
 
@@ -74,12 +90,19 @@ export default function About({ params }: { params: Promise<{ nome: string }> })
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-t from-gray-100 to-white p-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg max-w-4xl w-full">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Avaliações de {avaliacoes[0].nomePessoa}
-        </h1>
+    <div className="relative">
+    <div className="relative w-full h-[15rem] bg-gradient-to-b from-black to-gray-900 border-b-black border-b-2">
+    <div className="absolute inset-0 z-10 "></div>
+    <div className="relative z-20 flex justify-center items-center h-full">
+      <h1 className="text-center font-extrabold text-transparent text-[6rem] bg-clip-text bg-gradient-to-r from-red-600 to-yellow-400 animate-pulse">
+        Avaliações de {avaliacoes[0].nomePessoa}
+      </h1>
 
+      </div>
+    </div>
+    <div className="bg-gradient-to-r from-red-500 via-yellow-500 to-pink-500 h-1 rounded-full"></div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-black to-gray-900 p-4">
+      <div className="bg-gradient-to-tr from-red-600 to-pink-500 p-8 rounded-xl shadow-lg max-w-4xl w-full">
         <div className="space-y-6">
           {avaliacoes.map((avaliacao) => (
             <div 
@@ -115,7 +138,8 @@ export default function About({ params }: { params: Promise<{ nome: string }> })
                   {avaliacao.feedback}
                 </p>
               </div>
-              <Link href={`edit/${avaliacao.id}`}> EDITAR </Link>
+              <Link href={`edit/${avaliacao.id}`} className="bg-teal-500 text-white px-4 py-2 rounded-md transition-transform transform hover:scale-105 shadow-lg hover:bg-teal-600"> EDITAR </Link>
+              <Link href="#" onClick={()=> handleDelete(avaliacao.id)} className="bg-red-700 text-white px-4 py-2 rounded-md transition-transform transform hover:scale-105 shadow-lg hover:bg-red-800"> APAGAR </Link>
             </div>
           ))}
         </div>
@@ -128,6 +152,7 @@ export default function About({ params }: { params: Promise<{ nome: string }> })
           </Link>
         </div>
       </div>
+    </div>
     </div>
   );
 }

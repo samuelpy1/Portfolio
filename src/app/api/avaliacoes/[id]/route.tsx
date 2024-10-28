@@ -80,3 +80,34 @@ export async function PUT(
     );
   }
 }
+
+// Método DELETE
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const id = await params.id;
+
+    const file = await fs.readFile(
+      process.cwd() + "/src/data/base.json",
+      "utf-8"
+    );
+
+    const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
+
+    const indice = avaliacoes.findIndex((a) => a.id == Number(id));
+
+    if (indice != -1) {
+      
+      avaliacoes.splice(indice, 1);
+
+      const newFile = JSON.stringify(avaliacoes);
+      await fs.writeFile(process.cwd() + "/src/data/base.json", newFile);
+      return NextResponse.json({msg:"Produto excluído com sucesso."});
+    }
+  } catch (error) {
+    console.error("Falha na exclusão da Avaliação.", error);
+    return NextResponse.json({ msg: "Falha no DELETE!" }, { status: 500 });
+  }
+}

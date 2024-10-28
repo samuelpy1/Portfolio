@@ -15,10 +15,8 @@ export default function Loading() {
     }, [])
     
   return (
-    <div>
         <div className="min-h-screen flex justify-center items-center">
           {loading ? <Spinner /> : <h1 className="text-3xl font-bold">Carregado...</h1>}
         </div>
-    </div>
   )
 }
