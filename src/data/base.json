@@ -1,15 +1,9 @@
-// {
-//     nomePessoa: string,
-//     nomeAvaliacao: string, 
-//     data: Date, 
-//     nota: number, 
-//     feedback: string, 
-// }
-
 [
-    {
+    {   
+        "id": 0,
         "nomePessoa": "Samuel Yariwake",
         "nomeAvaliacao": "CP5 - Worlds in Collision",
+        "tipoAvaliacao": "Checkpoint",
         "data": "13-10-2004",
         "nota": 10,
         "feedback": "Uma bosta"
