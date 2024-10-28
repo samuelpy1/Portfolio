@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Logo from "../../public/img/logo.png"
+import Logo from "../../public/img/fiaplogo.png"
 import Link from "next/link";
 export default function Cabecalho() {
     return (
@@ -11,11 +11,9 @@ export default function Cabecalho() {
                 <Link className="ml-4 font-semibold text-3xl" href={'/'}>Immanuel Velikovsky</Link>
             </span>
             <nav className="flex gap-3 text-lg">
-                <Link className="hover:underline" href={'/'}>Home</Link>
-                <Link className="hover:underline" href={'/pages/historia'}>História</Link>
-                <Link className="hover:underline" href={'/pages/legado'}>Legado</Link>
-                <Link className="hover:underline" href={'/pages/vida'}>Vida</Link>
-                <Link className="hover:underline" href={'/pages/teorias'}>Teorias</Link>
+                <Link className="hover:text-yellow-500" href={'/pages/checkpoints'}>CheckPoints</Link>
+                <Link className="hover:text-yellow-500" href={'/pages/gs'}>Global Solution</Link>
+                <Link className="hover:text-yellow-500" href={'/pages/cs'}>Challenge Sprints</Link>
             </nav>
         </div>
     );

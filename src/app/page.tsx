@@ -1,7 +1,11 @@
 // page.tsx
 "use client";
 import Image from "next/image";
+import fiaplogo from "../public/img/fiaplogo.png";
+import { motion } from "framer-motion";
+import Link from "next/link";
 import { alunos } from "./alunos";
+
 
 export default function Home() {
   return (
