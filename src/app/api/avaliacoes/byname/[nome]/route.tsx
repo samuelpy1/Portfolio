@@ -5,15 +5,16 @@ import { TipoAvaliacao } from "@/types";
 
 export async function GET(
     request: Request,
-    { params }: { params: { nome: string } }
+    { params }: { params: Promise<{ nome: string }> }
   ) {
+    const resolvedParams = await params;
     const file = await fs.readFile(
       process.cwd() + "/src/data/base.json",
       "utf-8"
     );
     const dados: TipoAvaliacao[] = JSON.parse(file);
   
-    const avaliacoes: TipoAvaliacao[] = dados.filter((p) => p.nomePessoa == params.nome);
+    const avaliacoes: TipoAvaliacao[] = dados.filter((p) => p.nomePessoa == resolvedParams.nome);
   
     return NextResponse.json(avaliacoes);
   }
