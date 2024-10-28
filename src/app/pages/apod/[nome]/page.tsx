@@ -109,7 +109,7 @@ export default function About({ params }: { params: { nome: string } }) {
                   {avaliacao.feedback}
                 </p>
               </div>
-              <Link href=`pages/apod/${avaliacao.id}`>
+              <Link href={`pages/apod/${avaliacao.id}`}> EDITAR </Link>
             </div>
           ))}
         </div>

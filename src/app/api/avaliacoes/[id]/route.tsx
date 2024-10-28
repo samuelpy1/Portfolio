@@ -1,240 +1,82 @@
-// src/app/pages/apod/[id]/page.tsx
-"use client"
-import { useEffect, useState } from "react";
-import Link from "next/link";
 import { TipoAvaliacao } from "@/types";
-import { useRouter } from "next/navigation";
+import { promises as fs } from "fs";
+import { NextResponse } from "next/server";
 
-interface PageProps {
-  params: {
-    id: string;
-  }
-}
+// Método GET para buscar uma avaliação específica
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const id = await params.id;
+    
+    const file = await fs.readFile(
+      process.cwd() + "/src/data/base.json",
+      "utf-8"
+    );
 
-export default function EditarAvaliacao({ params }: PageProps) {
-  const router = useRouter();
-  const [avaliacao, setAvaliacao] = useState<TipoAvaliacao>({
-    data: new Date(),
-    feedback: "",
-    nomeAvaliacao: "",
-    nomePessoa: "",
-    nota: 0,
-    id: 0,
-    tipoAvaliacao: "GS"
-  });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [saving, setSaving] = useState(false);
+    const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
+    const avaliacao = avaliacoes.find((a) => a.id === Number(id));
 
-  useEffect(() => {
-    async function fetchAvaliacao() {
-      try {
-
-        const response = await fetch(`/api/avaliacoes/${params.id}`);
-        if (!response.ok) {
-          throw new Error('Falha ao carregar os dados');
-        }
-        const data = await response.json();
-        setAvaliacao({
-          ...data,
-          data: new Date(data.data)
-        });
-      } catch (error) {
-        console.error('Erro na busca:', error);
-        setError('Erro ao carregar a avaliação');
-      } finally {
-        setLoading(false);
-      }
+    if (!avaliacao) {
+      return NextResponse.json(
+        { error: "Avaliação não encontrada" },
+        { status: 404 }
+      );
     }
 
-    if (params.id) {
-      fetchAvaliacao();
-    }
-  }, [params.id]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      setSaving(true);
-      const response = await fetch(`/api/avaliacoes/${params.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...avaliacao,
-          data: avaliacao.data.toISOString()
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Falha ao salvar as alterações');
-      }
-
-      router.push('/');
-    } catch (error) {
-      console.error('Erro ao salvar:', error);
-      setError('Erro ao salvar as alterações');
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setAvaliacao(prev => ({
-      ...prev,
-      [name]: name === 'nota' 
-        ? parseFloat(value)
-        : name === 'data' 
-        ? new Date(value)
-        : value
-    }));
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-red-500 text-center">
-          <p>{error}</p>
-          <Link href="/">
-            <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
-              Voltar ao início
-            </button>
-          </Link>
-        </div>
-      </div>
+    return NextResponse.json(avaliacao);
+  } catch (error) {
+    console.error("Erro ao buscar avaliação:", error);
+    return NextResponse.json(
+      { error: "Erro ao buscar avaliação" },
+      { status: 500 }
     );
   }
-
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-t from-gray-100 to-white p-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg max-w-2xl w-full">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Editar Avaliação
-        </h1>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nome da Pessoa
-              </label>
-              <input
-                type="text"
-                name="nomePessoa"
-                value={avaliacao.nomePessoa}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nome da Avaliação
-              </label>
-              <input
-                type="text"
-                name="nomeAvaliacao"
-                value={avaliacao.nomeAvaliacao}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Tipo de Avaliação
-              </label>
-              <select
-                name="tipoAvaliacao"
-                value={avaliacao.tipoAvaliacao}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                required
-              >
-                <option value="GS">GS</option>
-                <option value="CP">CP</option>
-                <option value="CHALLENGE">CHALLENGE</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nota
-              </label>
-              <input
-                type="number"
-                name="nota"
-                value={avaliacao.nota}
-                onChange={handleChange}
-                min="0"
-                max="10"
-                step="0.1"
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Data
-              </label>
-              <input
-                type="date"
-                name="data"
-                value={avaliacao.data.toISOString().split('T')[0]}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Feedback
-              </label>
-              <textarea
-                name="feedback"
-                value={avaliacao.feedback}
-                onChange={handleChange}
-                rows={4}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 resize-none"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end space-x-4 pt-4">
-            <Link href="/">
-              <button
-                type="button"
-                className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
-              >
-                Cancelar
-              </button>
-            </Link>
-            <button
-              type="submit"
-              disabled={saving}
-              className={`px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 transition-colors
-                ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              {saving ? (
-                <div className="flex items-center">
-                  <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2" />
-                  Salvando...
-                </div>
-              ) : (
-                'Salvar Alterações'
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
 }
 
+// Método PUT existente
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const id = await params.id;
+
+    const file = await fs.readFile(
+      process.cwd() + "/src/data/base.json",
+      "utf-8"
+    );
+
+    const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
+    const avaliacaoAtualizada = await request.json();
+
+    const index = avaliacoes.findIndex((a) => a.id === Number(id));
+
+    if (index === -1) {
+      return NextResponse.json(
+        { error: "Avaliação não encontrada" },
+        { status: 404 }
+      );
+    }
+
+    avaliacoes[index] = {
+      ...avaliacaoAtualizada,
+      id: Number(id),
+      data: new Date(avaliacaoAtualizada.data)
+    };
+
+    await fs.writeFile(
+      process.cwd() + "/src/data/base.json",
+      JSON.stringify(avaliacoes, null, 2)
+    );
+
+    return NextResponse.json(avaliacoes[index]);
+  } catch (error) {
+    console.error("Erro ao atualizar avaliação:", error);
+    return NextResponse.json(
+      { error: "Erro ao atualizar avaliação" },
+      { status: 500 }
+    );
+  }
+}

@@ -1,16 +1,14 @@
-// src/app/pages/apod/[nome]/page.tsx
 "use client"
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { TipoAvaliacao } from "@/types";
+import { useRouter, useParams } from "next/navigation";
 
-interface PageProps {
-  params: {
-    nome: string;
-  }
-}
+export default function EditarAvaliacao() {
+  const router = useRouter();
+  const params = useParams();
+  const id = params.id as string;
 
-export default function ListaAvaliacoes({ params }: PageProps) {
   const [avaliacao, setAvaliacao] = useState<TipoAvaliacao>({
     data: new Date(),
     feedback: "",
@@ -22,12 +20,12 @@ export default function ListaAvaliacoes({ params }: PageProps) {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     async function fetchAvaliacao() {
       try {
-        setLoading(true);
-        const response = await fetch(`/api/avaliacoes/${params.nome}`);
+        const response = await fetch(`/api/avaliacoes/${id}`);
         if (!response.ok) {
           throw new Error('Falha ao carregar os dados');
         }
@@ -44,17 +42,49 @@ export default function ListaAvaliacoes({ params }: PageProps) {
       }
     }
 
-    if (params.nome) {
+    if (id) {
       fetchAvaliacao();
     }
-  }, [params.nome]);
+  }, [id]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500" />
-      </div>
-    );
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setSaving(true);
+      const response = await fetch(`/api/avaliacoes/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...avaliacao,
+          data: avaliacao.data.toString()
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Falha ao salvar as alterações');
+      }
+
+      router.push('/');
+    } catch (error) {
+      console.error('Erro ao salvar:', error);
+      setError('Erro ao salvar as alterações');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setAvaliacao(prev => ({
+      ...prev,
+      [name]: name === 'nota' 
+        ? parseFloat(value)
+        : name === 'data' 
+        ? new Date(value)
+        : value
+    }));
   }
 
   if (error) {
@@ -74,57 +104,132 @@ export default function ListaAvaliacoes({ params }: PageProps) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-t from-gray-100 to-white p-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg max-w-4xl w-full">
+      <div className="bg-white p-8 rounded-xl shadow-lg max-w-2xl w-full">
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Detalhes da Avaliação
+          Editar Avaliação
         </h1>
-        
-        <div className="bg-gray-50 p-6 rounded-lg shadow-md">
-          <div className="flex justify-between items-start mb-4">
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-4">
             <div>
-              <h2 className="text-xl font-semibold text-gray-800">
-                {avaliacao.nomeAvaliacao}
-              </h2>
-              <p className="text-gray-600 mt-1">
-                Aluno: {avaliacao.nomePessoa}
-              </p>
-              <p className="text-gray-600">
-                Tipo: {avaliacao.tipoAvaliacao}
-              </p>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nome da Pessoa
+              </label>
+              <input
+                type="text"
+                name="nomePessoa"
+                value={avaliacao.nomePessoa}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
             </div>
-            <div className="text-right">
-              <div className="text-2xl font-bold text-blue-600">
-                Nota: {avaliacao.nota.toFixed(1)}
-              </div>
-              <p className="text-sm text-gray-500">
-                {avaliacao.data.toLocaleDateString('pt-BR', {
-                  day: '2-digit',
-                  month: 'long',
-                  year: 'numeric'
-                })}
-              </p>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nome da Avaliação
+              </label>
+              <input
+                type="text"
+                name="nomeAvaliacao"
+                value={avaliacao.nomeAvaliacao}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Tipo de Avaliação
+              </label>
+              <select
+                name="tipoAvaliacao"
+                value={avaliacao.tipoAvaliacao}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                required
+              >
+                <option value="GS">GS</option>
+                <option value="CP">CP</option>
+                <option value="CHALLENGE">CHALLENGE</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nota
+              </label>
+              <input
+                type="number"
+                name="nota"
+                value={avaliacao.nota}
+                onChange={handleChange}
+                min="0"
+                max="10"
+                step="0.1"
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Data
+              </label>
+              <input
+                type="date"
+                name="data"
+                value={avaliacao.data instanceof Date ? avaliacao.data.toISOString().split('T')[0] : ''}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Feedback
+              </label>
+              <textarea
+                name="feedback"
+                value={avaliacao.feedback}
+                onChange={handleChange}
+                rows={4}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 resize-none"
+                required
+              />
             </div>
           </div>
-          
-          <div className="bg-white p-4 rounded-lg mt-4">
-            <h3 className="font-semibold text-gray-700 mb-2">Feedback</h3>
-            <p className="text-gray-600 whitespace-pre-line">{avaliacao.feedback}</p>
-          </div>
-          
-          <div className="mt-6 flex justify-end space-x-4">
+
+          <div className="flex justify-end space-x-4 pt-4">
             <Link href="/">
-              <button className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors">
-                Voltar
+              <button
+                type="button"
+                className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
+              >
+                Cancelar
               </button>
             </Link>
-            <Link href={`/pages/apod/edit/${avaliacao.id}`}>
-              <button className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 transition-colors">
-                Editar
-              </button>
-            </Link>
+            <button
+              type="submit"
+              disabled={saving}
+              className={`px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 transition-colors
+                ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              {saving ? (
+                <div className="flex items-center">
+                  <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2" />
+                  Salvando...
+                </div>
+              ) : (
+                'Salvar Alterações'
+              )}
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
 }
+
