@@ -1,8 +1,3 @@
-import Image from "next/image";
-import Idoso from "../../../public/img/immanuel.jpg";
-import Livro from "../../../public/img/livro.jpg";
-import Velikovsky from "@/public/img/velikas.jpg";
-
 export default function Checkpoints() {
   return (
     <div className="relative">
@@ -20,7 +15,7 @@ export default function Checkpoints() {
           <div className="flex flex-col lg:flex-row gap-8 items-center">
             <section className="text-lg lg:text-2xl flex flex-col justify-evenly text-white "> {/* Ajuste de tamanho de texto */}
               <p className="mb-20">
-                Check Points - Os check Points ou popularmente chamado pelos alunos de CP`s é uma prova que é aplicada três vezes ao longo do bimestre. Elas são usadas para testar o conhecimento a curto prazo do aluno, e por esse motivo sei peso na média das matérias é menor.
+                Os check Points ou popularmente chamado pelos alunos de CP`s é uma prova que é aplicada três vezes ao longo do bimestre. Elas são usadas para testar o conhecimento a curto prazo do aluno, e por esse motivo sei peso na média das matérias é menor.
               </p>
             </section>
           </div>
