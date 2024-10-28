@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import { TipoAvaliacao } from "@/types";
+import path from "path";
 
 
 export async function GET(
@@ -9,7 +10,7 @@ export async function GET(
   ) {
     const resolvedParams = await params;
     const file = await fs.readFile(
-      process.cwd() + "/data/base.json",
+      path.join(process.cwd(), 'public', 'data', 'base.json'),
       "utf-8"
     );
     const dados: TipoAvaliacao[] = JSON.parse(file);
