@@ -27,34 +27,11 @@ export default function Home() {
               </div>
             </div>
 
-            <section className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4 shadow">
-                <h3 className="font-bold mb-2">Global Solution</h3>
-                {/* Substitua pelos dados reais, se necessário */}
-                <p>GS: -</p>
-
-                <p>GS: -</p>
+                <h3 className="font-bold mb-2">Avaliações</h3>
+                <Link href="pages/apod/cadastro" className="bg-blue-500 text-white px-4 py-2 rounded m-2"> Adicionar Notas </Link>
+                <Link href={`pages/apod/${aluno.nomeEstudante}`} className="bg-blue-500 text-white px-4 py-2 rounded"> Visualizar e Editar </Link>
               </div>
-
-              <div className="bg-white rounded-lg p-4 shadow">
-                <h3 className="font-bold mb-2">Main Contenders</h3>
-                <Link href="pages/apod/cadastro" className="bg-blue-500 text-white px-4 py-2 rounded m-2"> Add New </Link>
-                <Link href={`pages/apod/${aluno.nomeEstudante}`} className="bg-blue-500 text-white px-4 py-2 rounded"> View All </Link>
-              </div>
-
-              <div className="bg-white rounded-lg p-4 shadow">
-                <h3 className="font-bold mb-2">Checkpoints</h3>
-                <p>Checkpoints avg: -</p>
-              </div>
-
-              <div className="bg-white rounded-lg p-4 shadow">
-                <h3 className="font-bold mb-2">Challenger Sprints</h3>
-                <ul>
-                  <li>Sprint 1</li>
-                  <li>Sprint 2</li>
-                </ul>
-              </div>
-            </section>
           </div>
         ))}
       </div>
