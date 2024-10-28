@@ -5,7 +5,7 @@ import { TipoAvaliacao } from "@/types";
 
 export async function GET(
     request: Request,
-    { params }: { params: { nome: string } }
+    { params }: { params: { id: number } }
   ) {
     const file = await fs.readFile(
       process.cwd() + "/src/data/base.json",
@@ -13,9 +13,9 @@ export async function GET(
     );
     const dados: TipoAvaliacao[] = JSON.parse(file);
   
-    const avaliacoes = dados.find((p) => p.nomePessoa == params.nome);
+    const avaliacao = dados.find((p) => p.id == params.id);
   
-    return NextResponse.json(avaliacoes);
+    return NextResponse.json(avaliacao);
   }
   
   export async function PUT(
@@ -64,20 +64,20 @@ export async function GET(
         );
     
         //A lista vem no formato de string, para podermos manipular ela, devemos converter em objeto.
-        const produtos: TipoProduto[] = JSON.parse(file);
+        const avaliacoes: TipoAvaliacao[] = JSON.parse(file);
     
         //Verificando a existência do produto através do ID passado.
         //Se os IDs derem match, recebemos o retorno de um indice válido, caso contrário recebemos -1.
-        const indice = produtos.findIndex((p) => p.id == params.id);
+        const indice = avaliacoes.findIndex((p) => p.id == params.id);
     
         //Verificar se o indice é válido:
         if (indice != -1) {
           
           //Removendo o objeto da lista utilizando o indice passado.
-          produtos.splice(indice, 1);
+          avaliacoes.splice(indice, 1);
     
           //Vamos converter a lista para string/JSONpara podermos devolver ela no arquivo .json.
-          const newFile = JSON.stringify(produtos);
+          const newFile = JSON.stringify(avaliacoes);
     
           //Finalmente podemos utilizar o fs para escrever ou guardar a lista no arquivo e sobrepor as antigas informações.
           await fs.writeFile(process.cwd() + "/src/data/base.json", newFile);
