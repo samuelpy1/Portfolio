@@ -9,7 +9,7 @@ export async function GET(
   ) {
     const resolvedParams = await params;
     const file = await fs.readFile(
-      process.cwd() + "/src/public/data/base.json",
+      process.cwd() + "/public/data/base.json",
       "utf-8"
     );
     const dados: TipoAvaliacao[] = JSON.parse(file);
