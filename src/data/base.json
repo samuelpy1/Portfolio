@@ -1,0 +1,20 @@
+// {
+//     nomePessoa: string,
+//     nomeAvaliacao: string, 
+//     data: Date, 
+//     nota: number, 
+//     feedback: string, 
+// }
+
+[
+    {
+        "nomePessoa": "Samuel Yariwake",
+        "nomeAvaliacao": "CP5 - Worlds in Collision",
+        "data": "13-10-2004",
+        "nota": 10,
+        "feedback": "Uma bosta"
+
+
+    }
+
+]

@@ -1,10 +1,16 @@
-export type NasaType = {
-    copyright: string,
-    title: string, 
-    url: string, 
-    service_version: string, 
-    media_type: string, 
-    explanation: string, 
-    date: string
-    hdurl: string
+import { StaticImageData } from "next/image";
+
+export type TipoAvaliacao = {
+    nomePessoa: string,
+    nomeAvaliacao: string,
+    tipoAvaliacao: string, 
+    data: Date, 
+    nota: number, 
+    feedback: string, 
+}
+export type Estudante = {
+    nomeEstudante: string;
+    Turma: string;
+    RM: number;
+    Foto: StaticImageData;
 }
