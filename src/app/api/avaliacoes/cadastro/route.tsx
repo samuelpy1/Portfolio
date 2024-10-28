@@ -3,7 +3,9 @@ import { promises as fs } from "fs";
 import { TipoAvaliacao } from "@/types";
 
 //ENDPOINT DESTE ARQUIVO:
+
 //http://localhost:3000/api/base-produtos
+
 
 export async function POST(request:Request) {
 
@@ -28,7 +30,7 @@ export async function POST(request:Request) {
 
         //Finalmente podemos utilizar o fs para escrever ou guardar a lista no arquivo e sobrepor as antigas informações.
         await fs.writeFile(process.cwd() + "/src/data/base.json", newFile);
-        
+
         return NextResponse.json(avaliacao,{status:201})
 
     } catch (error) {
