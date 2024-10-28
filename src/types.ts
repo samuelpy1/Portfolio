@@ -1,10 +1,7 @@
-export type NasaType = {
-    copyright: string,
-    title: string, 
-    url: string, 
-    service_version: string, 
-    media_type: string, 
-    explanation: string, 
-    date: string
-    hdurl: string
+export type TipoAvaliacao = {
+    nomePessoa: string,
+    nomeAvaliacao: string, 
+    data: Date, 
+    nota: number, 
+    feedback: string, 
 }

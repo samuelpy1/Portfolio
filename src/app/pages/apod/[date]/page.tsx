@@ -1,27 +1,23 @@
 "use client"
-import { NasaType } from "@/types";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { TipoAvaliacao } from "@/types";
 
-export default function About({ params }: { params: { date: string } }) {
-  const [apod, setApod] = useState<NasaType>({
-    copyright: " ",
-    title: "",
-    url: "",
-    service_version: "",
-    media_type: "",
-    explanation: "",
-    date: "",
-    hdurl: ""
+export default function About({ params }: { params: { nomeAvaliacao: string } }) {
+  const [avaliacao, setAvaliacao] = useState<TipoAvaliacao>({
+   data: new Date(Date.parse('2024-10-27')),
+   feedback: "",
+   nomeAvaliacao: "",
+   nomePessoa: "",
+   nota: 0,
   });
 
 
-  const selectedDate = params.date;
+  const selectedAvaliacao = params.nomeAvaliacao;
 
   useEffect(() => {
-    const fetchApod = async (date: string) => {
+    const fetch = async (date: string) => {
       try {
         const response = await fetch(`http://localhost:3000/api/nasa/${date}`);
         const data = await response.json();
