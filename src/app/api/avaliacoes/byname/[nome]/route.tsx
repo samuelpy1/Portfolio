@@ -1,46 +1,30 @@
-import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
+import { client } from "@/lib/appwrite_client"; // Certifique-se de que o módulo 'appwrite' está corretamente importado.
 import { TipoAvaliacao } from "@/types";
-import path from "path";
+import { Databases, Query } from 'appwrite';
+import { NextResponse } from "next/server";
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ nome: string }> }
-) {
-  const resolvedParams = await params;
+const database = new Databases(client);
 
+export async function GET(request: Request, { params }: { params: { nome: string } }) {
   try {
-    // Read the original file
-    const filePath = path.join(process.cwd(), 'public', 'data', 'base.json');
-    const originalFile = await fs.readFile(filePath, "utf-8");
-    const dados: TipoAvaliacao[] = JSON.parse(originalFile);
+    // Primeiro, obtemos os documentos do banco de dados.
+    const response = await database.listDocuments(
+      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
+      process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID as string,
+      [Query.orderAsc("$createdAt")]
+    );
 
-    // Initialize an array for combined results
-    let combinedAvaliacoes: TipoAvaliacao[] = [...dados];
-
-    // Read from /tmp if it exists
-    const tmpFilePath = '/tmp/base.json';
-    try {
-      const tmpFile = await fs.readFile(tmpFilePath, "utf-8");
-      const tmpDados: TipoAvaliacao[] = JSON.parse(tmpFile);
-      combinedAvaliacoes = [...combinedAvaliacoes, ...tmpDados];
-    } catch (error) {
-      // Ignore errors if the tmp file doesn't exist
-      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
-        console.error("Erro ao ler o arquivo temporário:", error);
-      }
-    }
-
-    // Filter evaluations based on the provided name
+    // Se você precisar filtrar as avaliações baseadas no nome, faça isso aqui.
+    const combinedAvaliacoes: TipoAvaliacao[] = response.documents; // Supondo que você tenha esse array de avaliações
     const avaliacoes: TipoAvaliacao[] = combinedAvaliacoes.filter(
-      (p) => p.nomePessoa === resolvedParams.nome
+      (p) => p.nomePessoa === params.nome
     );
 
     return NextResponse.json(avaliacoes);
   } catch (error) {
     console.error("Erro ao buscar avaliações:", error);
     return NextResponse.json(
-      { error: "Erro ao buscar avaliações" },
+      { error: "Erro ao buscar avaliações: " + error },
       { status: 500 }
     );
   }
