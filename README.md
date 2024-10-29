@@ -12,6 +12,8 @@ Este projeto é um sistema desenvolvido para gerenciar avaliações de CheckPoin
 | **557652** | Luiz Kamada      | 1TDSPV     |
 | **559213** | João Pedro Amorim      | 1TDSPV     |
 
+**Link do Projeto Deployado:** https://cp6-portfolio-final.vercel.app/
+
 ## Funcionalidades
 
 - **Página Inicial (Dashboard)**: Apresenta os alunos com links para páginas detalhadas de de seus CheckPoints, GlobalSolution e Challenger Sprints.
